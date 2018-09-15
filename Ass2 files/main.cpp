@@ -264,27 +264,33 @@ void idle() {
 	XInputWrapper xinput;
 	GamePad::XBoxController XBoxPlayer(&xinput, 0);
 
-	if (KeyManager::get()->isAsciiKeyPressed('a')) {
+	if (KeyManager::get()->isAsciiKeyPressed('a') ||
+		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedLeftDpad())) {
 		Camera::get()->strafeLeft();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('c')) {
+	if (KeyManager::get()->isAsciiKeyPressed('c') ||
+		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedX())) {
 		Camera::get()->strafeDown();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('d')) {
+	if (KeyManager::get()->isAsciiKeyPressed('d') ||
+		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedRightDpad())) {
 		Camera::get()->strafeRight();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('s')) {
+	if (KeyManager::get()->isAsciiKeyPressed('s') ||
+		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedDownDpad())) {
 		Camera::get()->moveBackward();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('w')) {
+	if (KeyManager::get()->isAsciiKeyPressed('w') ||
+		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedUpDpad())) {
 		Camera::get()->moveForward();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed(' ')) {
+	if (KeyManager::get()->isAsciiKeyPressed(' ') ||
+		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedY())) {
 		Camera::get()->strafeUp();
 	}
 
@@ -292,12 +298,12 @@ void idle() {
 	steering = 0;
 
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT) || 
-		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedLeftDpad())) {
+		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedLeftShoulder())) {
 		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;
 	}
 
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_RIGHT) || 
-		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedRightDpad())) {
+		(XBoxPlayer.IsConnected() && XBoxPlayer.PressedRightShoulder())) {
 		steering = Vehicle::MAX_RIGHT_STEERING_DEGS * -1;
 	}
 
