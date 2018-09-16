@@ -1,117 +1,105 @@
 #include "TrapezoidalPrism.hpp"
-#include "Shape.hpp"
 #include <math.h>
 
-TrapezoidalPrism::TrapezoidalPrism() :Shape() 
-{
+TrapezoidalPrism::TrapezoidalPrism() :Shape() {
+
 }
-TrapezoidalPrism::TrapezoidalPrism(float BottomWidth, float TopWidth, float Height, float offset, float Depth)
-{
-	alen = BottomWidth;
-	blen = TopWidth;
-	height = Height;
-	aoff = offset;
-	depth = Depth;
+TrapezoidalPrism::TrapezoidalPrism(double H, double TW, double BW, double D, double a) {
+	Height = H;
+	TopWidth = TW;
+	BottomWidth = BW;
+	Depth = D;
+	offset = a;
 }
 
-float TrapezoidalPrism::GetBottomWidth()
-{
-	return alen;
+double TrapezoidalPrism::GetHeight() {
+	return Height;
 }
 
-float TrapezoidalPrism::GetTopWidth()
-{
-	return blen;
+double TrapezoidalPrism::GetTopWidth() {
+	return TopWidth;
 }
 
-float TrapezoidalPrism::GetHeight()
-{
-	return height;
+double TrapezoidalPrism::GetBottomWidth() {
+	return BottomWidth;
 }
 
-float TrapezoidalPrism::GetOffset()
-{
-	return aoff;
+double TrapezoidalPrism::GetDepth() {
+	return Depth;
 }
 
-float TrapezoidalPrism::GetDepth()
-{
-	return depth;
+double TrapezoidalPrism::GetOffset() {
+	return offset;
 }
 
-
-void TrapezoidalPrism::SetBottomWidth(float Bottom)
-{
-	alen = Bottom;
+void TrapezoidalPrism::SetHeight(double Hei) {
+	Height = Hei;
 }
-void TrapezoidalPrism::SetTopWidth(float Top)
-{
-	blen = Top;
+void TrapezoidalPrism::SetTopWidth(double Top) {
+	TopWidth = Top;
 }
-void TrapezoidalPrism::SetHeight(float Hei)
-{
-	height = Hei;
+void TrapezoidalPrism::SetBottomWidth(double Bottom) {
+	BottomWidth = Bottom;
 }
-void TrapezoidalPrism::SetOffset(float Off)
-{
-	aoff = Off;
+void TrapezoidalPrism::SetDepth(double Dep) {
+	Depth = Dep;
 }
-void TrapezoidalPrism::SetDepth(float Dep)
-{
-	depth = Dep;
+void TrapezoidalPrism::SetOffset(double Off) {
+	offset = Off;
 }
-
 
 void TrapezoidalPrism::draw() {
-	float h = height;
-	float t = blen + aoff;
-	float b = alen;
-	float d = depth;
-	float a = aoff;
+	double h = Height;
+	double t = BottomWidth - offset;
+	double b = BottomWidth;
+	double d = Depth;
+	double a = offset;
+	double c = b - a - TopWidth;
 
-	glTranslated(-b / 2, 0, -d / 2);
-	//glRotated(180, 0, 1, 0);
 	glColor3f(red, green, blue);
+	glTranslated(b / 2, 0, -d / 2);
 
-	glBegin(GL_POLYGON);
+	glBegin(GL_QUADS);
 	glVertex3d(x, y, z);
-	glVertex3d(x + b, y, z);
-	glVertex3d(x + b, y, z + d);
+	glVertex3d(x - b, y, z);
+	glVertex3d(x - b, y, z + d);
 	glVertex3d(x, y, z + d);//bottom face
 	glEnd();
 
-	glBegin(GL_POLYGON);
+	glBegin(GL_QUADS);
 	glVertex3d(x, y, z);
-	glVertex3d(x + b, y, z);
-	glVertex3d(x + t, y + h, z);
-	glVertex3d(x + a, y + h, z);//front face
+	glVertex3d(x - b, y, z);
+	glVertex3d(x - t, y + h, z);
+	glVertex3d(x - c, y + h, z);//front face
 	glEnd();
 
-	glBegin(GL_POLYGON);
-	glVertex3d(x + b, y, z);
-	glVertex3d(x + b, y, z + d);
-	glVertex3d(x + t, y + h, z + d);
-	glVertex3d(x + t, y + h, z);//Right face
+	glBegin(GL_QUADS);
+	glVertex3d(x - b, y, z);
+	glVertex3d(x - b, y, z + d);
+	glVertex3d(x - t, y + h, z + d);
+	glVertex3d(x - t, y + h, z);//Right face
 	glEnd();
 
-	glBegin(GL_POLYGON);
+	glBegin(GL_QUADS);
 	glVertex3d(x, y, z);
-	glVertex3d(x + a, y + h, z);
-	glVertex3d(x + a, y + h, z + d);
-	glVertex3d(x, y, z + d);//Left face
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glVertex3d(x + a, y + h, z);
-	glVertex3d(x + t, y + h, z);
-	glVertex3d(x + t, y + h, z + d);
-	glVertex3d(x + a, y + h, z + d);//Top face
-	glEnd();
-
-	glBegin(GL_POLYGON);
 	glVertex3d(x, y, z + d);
-	glVertex3d(x + b, y, z + d);
-	glVertex3d(x + t, y + h, z + d);
-	glVertex3d(x + a, y + h, z + d);//back face
+	glVertex3d(x - c, y + h, z + d);
+	glVertex3d(x - c, y + h, z);//Left face
 	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex3d(x - c, y + h, z);
+	glVertex3d(x - t, y + h, z);
+	glVertex3d(x - t, y + h, z + d);
+	glVertex3d(x - c, y + h, z + d);//Top face
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex3d(x, y, z + d);
+	glVertex3d(x - b, y, z + d);
+	glVertex3d(x - t, y + h, z + d);
+	glVertex3d(x - c, y + h, z + d);//back face
+	glEnd();
+
+
 }
