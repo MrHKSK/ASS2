@@ -3,89 +3,95 @@
 #include <math.h>
 
 
-TriangularPrism::TriangularPrism():Shape()
+TriangularPrism::TriangularPrism() :Shape()
 {
 }
 
-TriangularPrism::TriangularPrism(float side1, float side2, float t, float d)
+TriangularPrism::TriangularPrism(double side1, double side2, double theta, double depth)
 {
-	alen = side1;
-	blen = side2;
-	angle = t;
-	depth = d;
+	Side1 = side1;
+	Side2 = side2;
+	Theta = theta;
+	Depth = depth;
 }
 
-float TriangularPrism::Getside1()
+double TriangularPrism::Getside1()
 {
-	return alen;
+	return Side1;
 }
 
-float TriangularPrism::Getside2()
+double TriangularPrism::Getside2()
 {
-	return blen;
+	return Side2;
 }
 
-float TriangularPrism::Gettheta()
+double TriangularPrism::Gettheta()
 {
-	return angle;
+	return Theta;
 }
 
-float TriangularPrism::Getdepth()
+double TriangularPrism::Getdepth()
 {
-	return depth;
+	return Depth;
 }
 
-
-void TriangularPrism::Setside1(float side1)
+void TriangularPrism::Setside1(double side1)
 {
-	alen = side1;
+	Side1 = side1;
 }
 
-void TriangularPrism::Setside2(float side2)
+void TriangularPrism::Setside2(double side2)
 {
-	blen = side2;
+	Side2 = side2;
 }
 
-void TriangularPrism::Settheta(float t)
+void TriangularPrism::Settheta(double theta)
 {
-	angle = t;
+	Theta = theta;
 }
 
-void TriangularPrism::Setdepth(float d)
+void TriangularPrism::Setdepth(double depth)
 {
-	depth = d;
+	Depth = depth;
 }
 
 void TriangularPrism::draw()
 {
-	float s1 = alen, s2 = blen, t = angle *(M_PI)/180, d = depth;
-	glTranslated(-s1 / 2, 0, -d / 2);
+	double s1 = Side1, s2 = Side2, t = Theta * (M_PI) / 180, d = Depth;
+	glTranslated(s1 / 2, 0, d / 2);
 	glColor3f(red, green, blue);
+
 	glBegin(GL_TRIANGLES);
 	glVertex3d(x, y, z);
-	glVertex3d(x + s1, y, z);
-	glVertex3d(x + s2 * cos(t), y + s2 * sin(t), z);
-	glEnd();	// front
+	glVertex3d(x - s1, y, z);
+	glVertex3d(x - s2 * cos(t), y + s2 * sin(t), z);
+	glEnd();//front face
+
+	glBegin(GL_TRIANGLES);
+	glVertex3d(x, y, z - d);
+	glVertex3d(x - s1, y, z - d);
+	glVertex3d(x - s2 * cos(t), y + s2 * sin(t), z - d);
+	glEnd();//back face
 
 	glBegin(GL_QUADS);
 	glVertex3d(x, y, z);
-	glVertex3d(x + s2 * cos(t), y + s2 * sin(t), z);
-	glVertex3d(x + s2 * cos(t), y + s2 * sin(t), z + d);
-	glVertex3d(x, y, z + d);
-	glEnd();
+	glVertex3d(x - s2 * cos(t), y + s2 * sin(t), z);
+	glVertex3d(x - s2 * cos(t), y + s2 * sin(t), z - d);
+	glVertex3d(x, y, z - d);
+	glEnd();//left face
 
 	glBegin(GL_QUADS);
-	glVertex3d(x + s1, y, z);
-	glVertex3d(x + s2 * cos(t), y + s2 * sin(t), z);
-	glVertex3d(x + s2 * cos(t), y + s2 * sin(t), z + d);
-	glVertex3d(x + s1, y, z + d);
-	glEnd();
+	glVertex3d(x - s1, y, z);
+	glVertex3d(x - s2 * cos(t), y + s2 * sin(t), z);
+	glVertex3d(x - s2 * cos(t), y + s2 * sin(t), z - d);
+	glVertex3d(x - s1, y, z - d);
+	glEnd();//top face
 
 	glBegin(GL_QUADS);
 	glVertex3d(x, y, z);
-	glVertex3d(x + s1, y, z);
-	glVertex3d(x + s1, y, z + d);
-	glVertex3d(x, y, z + d);
-	glEnd();
+	glVertex3d(x - s1, y, z);
+	glVertex3d(x - s1, y, z - d);
+	glVertex3d(x, y, z - d);
+	glEnd();//bottom face
 }
 
